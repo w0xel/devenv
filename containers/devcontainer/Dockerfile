@@ -45,12 +45,19 @@ RUN rm -rf ~/.cache/nix && \
     sudo -i rm -rf /var/cache/apk/* && \
     sudo -i nix-collect-garbage --delete-old
 
+# Support JetBrains IDEs & direnv on JetBrains IDEs
+RUN mkdir -p /.jbdevcontainer/config/direnv
+RUN cat <<EOF > /.jbdevcontainer/config/direnv/config.toml
+[whitelist]
+prefix = [ "/IdeaProjects" ]
+EOF
+
 # Set default user
 USER vscode
 
-# Configure direnv
+# Configure direnv for VSCode
 RUN mkdir -p ~/.config/direnv
-RUN <<EOF > ~/.config/direnv/config.toml
+RUN cat <<EOF > ~/.config/direnv/config.toml
 [whitelist]
 prefix = [ "/workspaces" ]
 EOF
